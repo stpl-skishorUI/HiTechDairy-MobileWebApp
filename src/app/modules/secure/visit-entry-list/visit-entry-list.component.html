@@ -1,1 +1,280 @@
-<p>visit-entry-list works!</p>
+<div class="card border-0 plain-card">
+    <div class="card-header p-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <span>Visit Entry List</span>
+            <div class="d-flex gap-2">
+                <button mat-flat-button class="btn-main-light btn-icon">
+                    <mat-icon class="material-symbols-rounded">
+                        download
+                    </mat-icon>
+                </button>
+                <button mat-flat-button class="btn-main">
+                    <mat-icon class="material-symbols-rounded">
+                        add
+                    </mat-icon>
+                    Add Visit
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-2">
+        <div class="d-flex justify-content-end mb-2">
+            <button class="btn btn-filter shadow-none btn-default btn-sm" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <div class="d-flex align-items-center gap-2">
+                    <mat-icon class="material-symbols-rounded">
+                        filter_list
+                    </mat-icon>
+                    <span class="fw-normal">Filter</span>
+                </div>
+            </button>
+        </div>
+        <div class="collapse" id="collapseExample">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Select Organization</mat-label>
+                <mat-select>
+                    <mat-option value="option1">Option 1</mat-option>
+                    <mat-option value="option2">Option 2</mat-option>
+                    <mat-option value="option3">Option 3</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Select Unit</mat-label>
+                <mat-select>
+                    <mat-option value="option1">Option 1</mat-option>
+                    <mat-option value="option2">Option 2</mat-option>
+                    <mat-option value="option3">Option 3</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="row gx-2">
+                <div class="col-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>From Date</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>To Date</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Select Employee</mat-label>
+                <mat-select>
+                    <mat-option value="option1">Option 1</mat-option>
+                    <mat-option value="option2">Option 2</mat-option>
+                    <mat-option value="option3">Option 3</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="employee-list">
+            <div class="employee">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee1" role="button"
+                        aria-expanded="false" aria-controls="collapseEmployee1">Dhiraj Kambale</a>
+                    <button class="btn btn-edit">
+                        <mat-icon class="material-symbols-rounded">
+                            edit_square
+                        </mat-icon>
+                    </button>
+                </div>
+                <div class="collapse" id="collapseEmployee1">
+                    <ul class="list-group visit-details list-group-flush">
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/visit-date.svg" alt="visit date">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    25/09/2024, 2:12 PM
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/organization.svg" alt="organization">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Amul Dairy Pvt Ltd
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/unit.svg" alt="Unit..">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Branch Unit 1
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/destination.svg" alt="Destination">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Doodh Sankalan kendra
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/visit.svg" alt="Visit">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    This is some content from a media component. You can replace this with any content
+                                    and
+                                    adjust it as needed.
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="employee">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee2" role="button"
+                        aria-expanded="false" aria-controls="collapseEmployee2">Dhiraj Kambale</a>
+                    <button class="btn btn-edit">
+                        <mat-icon class="material-symbols-rounded">
+                            edit_square
+                        </mat-icon>
+                    </button>
+                </div>
+                <div class="collapse" id="collapseEmployee2">
+                    <ul class="list-group visit-details list-group-flush">
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/visit-date.svg" alt="visit date">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    25/09/2024, 2:12 PM
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/organization.svg" alt="organization">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Amul Dairy Pvt Ltd
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/unit.svg" alt="Unit..">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Branch Unit 1
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/destination.svg" alt="Destination">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Doodh Sankalan kendra
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/visit.svg" alt="Visit">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    This is some content from a media component. You can replace this with any content
+                                    and
+                                    adjust it as needed.
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="employee">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee3" role="button"
+                        aria-expanded="false" aria-controls="collapseEmployee3">Dhiraj Kambale</a>
+                    <button class="btn btn-edit">
+                        <mat-icon class="material-symbols-rounded">
+                            edit_square
+                        </mat-icon>
+                    </button>
+                </div>
+                <div class="collapse" id="collapseEmployee3">
+                    <ul class="list-group visit-details list-group-flush">
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/visit-date.svg" alt="visit date">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    25/09/2024, 2:12 PM
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/organization.svg" alt="organization">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Amul Dairy Pvt Ltd
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/unit.svg" alt="Unit..">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Branch Unit 1
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/destination.svg" alt="Destination">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Doodh Sankalan kendra
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0">
+                                    <img src="assets/images/employee/visit.svg" alt="Visit">
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    This is some content from a media component. You can replace this with any content
+                                    and
+                                    adjust it as needed.
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
