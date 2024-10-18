@@ -1,0 +1,294 @@
+/* default font and font size set */
+.mdc-form-field,
+.mdc-tab__content,
+.mdc-floating-label,
+.mat-mdc-input-element,
+.mdc-list-item__primary-text,
+.mat-mdc-menu-item-text,
+.mat-mdc-select-value,
+.mat-select-search-input {
+    font-family: var(--default-font) !important;
+    font-size: 0.85rem !important;
+    letter-spacing: normal !important;
+    color: #000;
+}
+
+/* mat controls label color set */
+.mdc-floating-label mat-label {
+    color: #000;
+}
+
+/* error mat controls label color set */
+.mat-form-field-invalid .mdc-floating-label mat-label {
+    color: #f44336 !important;
+}
+
+/* label in form controls position changed */
+.mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+    top: 16px !important;
+}
+
+/* mat select css starts */
+.mat-mdc-select-panel {
+    padding: 10px !important;
+}
+
+.mat-mdc-option {
+    min-height: 36px !important;
+}
+
+.mat-mdc-option-active,
+.mat-mdc-option:active,
+.mat-mdc-option:hover {
+    background-color: var(--main-light-color) !important;
+}
+
+/* mat select css ends */
+
+/* mat icon font and defaults set */
+mat-icon.mat-icon {
+    font-family: 'Material Symbols Rounded';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    height: 16px;
+    width: 16px;
+}
+
+/* controls border radius */
+// .mdc-notched-outline__leading,
+// .mdc-notched-outline__notch,
+// .mdc-notched-outline__trailing {
+//     border-radius: 0 !important;
+// }
+
+/* icon in button in form control font size changed */
+.mat-mdc-icon-button.mat-mdc-button-base .material-symbols-rounded {
+    font-size: 1.1rem;
+}
+
+/* svg in datepicker button height set */
+.mat-mdc-icon-button svg {
+    height: 20px !important;
+}
+
+/* error font changed */
+.mat-mdc-form-field-error {
+    font-family: var(--default-font) !important;
+    letter-spacing: normal !important;
+    top: -4px;
+    position: relative;
+    left: 4px !important;
+}
+
+/* validation error alignment set  */
+.mat-mdc-form-field-hint-wrapper, 
+.mat-mdc-form-field-error-wrapper{
+    padding: 0 !important;
+}
+
+/* form control disabled background color set */
+.mdc-text-field--disabled {
+    background-color: #eee;
+    border-radius: 0;
+}
+
+/* form control disabled border color set */
+.mdc-text-field--disabled .mdc-notched-outline__leading,
+.mdc-text-field--disabled .mdc-notched-outline__notch,
+.mdc-text-field--disabled .mdc-notched-outline__trailing {
+    border-color: rgba(0, 0, 0, 0.38) !important;
+    border-radius: 0;
+}
+
+/* modal popup header style */
+.mdc-dialog__title {
+    font-family: var(--default-font) !important;
+    padding: 5px 15px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: #151515 !important;
+    border-bottom: solid 1px #eee;
+}
+
+.mdc-dialog__title::before {
+    display: unset !important;
+}
+
+/* modal popup header style ends */
+
+/* modal popup body style */
+.mdc-dialog .mdc-dialog__content {
+    padding: 15px !important;
+}
+
+/* mat menu css for pdf, xls starts */
+.mat-mdc-menu-content {
+    padding: 5px !important;
+}
+
+.mat-mdc-menu-content .mat-mdc-menu-item {
+    min-height: 36px !important;
+    border-radius: 0.375rem;
+}
+
+.mat-mdc-menu-item .mat-icon {
+    margin-right: 10px !important;
+}
+
+.mat-mdc-menu-item:hover {
+    background-color: var(--main-light-color) !important;
+}
+
+/* mat menu css for pdf, xls ends */
+/* icons in switch toggle hide*/
+.mdc-switch__icons {
+    display: none !important;
+}
+
+/* slide toggle color changed css starts */
+.mat-mdc-slide-toggle .mdc-switch:enabled .mdc-switch__track::after {
+    background: #8ce18c !important;
+}
+
+.mat-mdc-slide-toggle .mdc-switch.mdc-switch--selected:enabled .mdc-switch__handle::after {
+    background: #047c08 !important;
+}
+
+/* slide toggle color changed css ends */
+
+/* background & border color for checkbox set to default color */
+.mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+    border-color: var(--main-color) !important;
+    background-color: var(--main-color) !important;
+}
+
+.mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full,
+.mat-primary .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
+    background: var(--main-color);
+}
+
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+    color: var(--main-color) !important;
+}
+
+/* background color for radiobutton set to default color */
+.mat-mdc-radio-button.mat-mdc-radio-checked .mdc-radio__background::before {
+    background-color: var(--main-color) !important;
+}
+
+/* border color for radiobutton set to default color */
+.mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled:checked+.mdc-radio__background .mdc-radio__outer-circle,
+.mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle {
+    border-color: var(--main-color) !important;
+}
+
+/* disabled but unselected checkbox background color set */
+.mat-mdc-checkbox-disabled .mdc-checkbox .mdc-checkbox__background {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* label and placeholder hide in mat controls issue resolved */
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-floating-label {
+    display: inline !important;
+}
+
+/* mat tab padding issue */
+.mat-mdc-tab-body-content {
+    padding: 15px;
+}
+
+/* pagination default font changed */
+.mat-mdc-paginator-container {
+    font-family: var(--default-font) !important;
+    letter-spacing: normal;
+}
+
+/* snackbar font settings */
+.mat-mdc-snack-bar-container .mdc-snackbar__label,
+.mat-button-toggle-label-content {
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    font-family: var(--default-font) !important;
+    font-size: 0.85rem !important;
+    letter-spacing: normal !important;
+}
+
+.mat-mdc-form-field-text-suffix {
+    font-family: var(--default-font) !important;
+    font-size: 0.85rem;
+    letter-spacing: normal;
+    font-weight: 600;
+    line-height: 34px;
+    background-color: #eee;
+    margin-right: -15px;
+    padding-inline: 10px;
+}
+
+/* mat table header text align*/
+.mat-sort-header-content {
+    text-align: left !important;
+}
+
+/* button group customized */
+.mat-button-toggle-appearance-standard.mat-button-toggle-checked {
+    color: #fff !important;
+    font-weight: 600 !important;
+    background-color: var(--main-color) !important;
+}
+
+
+
+/* custom CSS added for text in prefix & suffix */
+// .mat-mdc-form-field-text-prefix,
+// .mat-mdc-form-field-text-suffix {
+//     font-family: var(--default-font) !important;
+//     font-size: 0.75rem !important;
+//     letter-spacing: normal !important;
+//     font-weight: 600;
+//     line-height: 2.7 !important;
+//     background-color: #eee !important;
+//     margin-inline: 2px !important;
+//     padding-inline: 15px !important;
+// }
+
+/* CSS added for create task page */
+.custom-by-month .mat-mdc-tab-header,
+.custom-by-month .mat-mdc-tab,
+.custom-by-month .mdc-tab,
+.custom-by-month .mat-mdc-tab-labels,
+.custom-by-month .mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab,
+.custom-by-month .mat-mdc-tab:not(.mdc-tab--stacked) {
+    height: 34px !important;
+    min-height: 34px !important;
+    font-size: 0.75rem;
+    background-color: var(--main-light-color);
+}
+
+.custom-by-month .mdc-tab-indicator--active {
+    background-color: var(--main-color) !important;
+    color: #fff !important;
+    border-radius: 5px !important;
+}
+
+.custom-by-month .mat-mdc-tab .mdc-tab-indicator__content--underline {
+    border: none !important;
+}
+
+.custom-by-month .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+    color: #fff !important;
+}
+
+.custom-by-month .mat-mdc-tab-body-content {
+    padding: 15px 0 !important;
+}
