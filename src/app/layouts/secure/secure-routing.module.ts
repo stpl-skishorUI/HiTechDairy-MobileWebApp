@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   { path: '', component: SecureComponent },
   { path: 'dashboard', loadChildren: () => import('../../modules/secure/dashboard/dashboard.module').then(m => m.DashboardModule), data: { breadcrumb: [{ title: 'Dashboard', active: true }] }, },
+  { path: 'visit-entry-list', loadComponent: () => import('../../modules/secure/visit-entry-list/visit-entry-list.component').then(m => m.VisitEntryListComponent), data: { breadcrumb: 'Visit Entry List' } },
 ];
 
 @NgModule({
