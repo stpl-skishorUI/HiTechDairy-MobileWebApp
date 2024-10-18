@@ -98,7 +98,7 @@ a.text-main:hover {
     border-radius: 0.375rem !important;
     color: var(--main-color) !important;
     font-weight: 600;
-    height: 36px;
+    height: 36px !important;
 }
 
 .btn-icon {
@@ -131,6 +131,11 @@ a.text-main:hover {
 .plain-card .card-header {
     font-size: 0.85rem;
     font-weight: 600;
+}
+
+.plain-card .card-footer {
+    border: 0;
+    background-color: transparent;
 }
 
 .plain-card .card-body {
