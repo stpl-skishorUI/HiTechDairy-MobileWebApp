@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { CommonMethodService } from './common-method.service';
+import { CommonMethodsService } from './common-methods.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ErrorHandlingService {
+export class ErrorService {
 
-  constructor(private commonMethodService: CommonMethodService, private ngxSpinnerService: NgxSpinnerService) { }
+  constructor(private commonMethods: CommonMethodsService) { }
 
-  handelError(error: any) {
-    this.ngxSpinnerService.hide();
+  handleError(error: any) {
     let msg: string = '';
     switch (Number(error)) {
       case 0: msg += "No Data Found"; break;
@@ -37,7 +35,10 @@ export class ErrorHandlingService {
       case 307: msg += "Temporary Redirect"; break;
       case 308: msg += "Permanent Redirect"; break;
       case 400: msg += "Bad Request"; break;
-      case 401: msg += "Unauthorized"; break;
+      case 401: msg += 
+      "Your Session Has Expired. Please Re-Login Again";     
+      this.commonMethods.redirectToLoginHome('Login');
+      break;
       case 402: msg += "Payment Required"; break;
       case 403: msg += "Forbidden"; break;
       case 404: msg += "No Data Found"; break;
@@ -81,6 +82,6 @@ export class ErrorHandlingService {
       }
     }
 
-    this.commonMethodService.snackBar(msg, 1);
+    this.commonMethods.matSnackBar(msg, 1);
   }
 }
