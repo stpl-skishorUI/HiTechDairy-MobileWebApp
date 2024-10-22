@@ -22,7 +22,6 @@ export class HeaderComponent {
 
   selectLanguage(lang?: any) {
     this.language = lang ? lang : 'English';
-    this.webStorage.selLanguage.next(this.language);
   }
 
 }
