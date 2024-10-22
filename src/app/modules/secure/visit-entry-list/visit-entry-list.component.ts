@@ -12,11 +12,12 @@ import { WebStorageService } from 'src/app/core/services/web-storage.service';
 import { CommonMethodsService } from 'src/app/core/services/common-methods.service';
 import { ApiService } from 'src/app/core/services/api.service';
 import { ErrorService } from 'src/app/core/services/error.service';
-import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MasterService } from 'src/app/core/services/master.service';
 import { AESEncryptDecryptService } from 'src/app/core/services/aesencrypt-decrypt.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-visit-entry-list',
@@ -33,6 +34,7 @@ import { AESEncryptDecryptService } from 'src/app/core/services/aesencrypt-decry
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    MatPaginatorModule,
     NgxMatSelectSearchModule
   ],
   templateUrl: './visit-entry-list.component.html',
@@ -65,8 +67,10 @@ export class VisitEntryListComponent {
   _onDestroy = new Subject<void>();
   isChecked: boolean = false;
   currentDate=new Date()
+  selectedIndex: number = 0;
+  isSearch: boolean = false;
 
-  constructor(private webService: WebStorageService,
+  constructor(public webService: WebStorageService,
     private fb: FormBuilder,
     private commonMethod: CommonMethodsService,
     private apiService: ApiService,
@@ -80,9 +84,9 @@ export class VisitEntryListComponent {
     }
 
   ngOnInit(){
+    this.searchControls();
     this.createFilterForm();
     this.getOrganization();
-    //this.getTableDetails();
   }
 
   getLoggedInUserDetails(mNo: any){
@@ -106,12 +110,18 @@ export class VisitEntryListComponent {
 
   createFilterForm(){
     this.filterForm = this.fb.group({
-      organization: [],
-      unit: [],
+      organization: [this.webService.getOrgId() || '',[Validators.required]],
+      unit: [this.webService.getUnitId() || '',[Validators.required]],
       fromDate: [new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1)],
       toDate: [new Date()],
-      employeeList: [],
+      employeeList: ['',[Validators.required]],
     })
+  }
+
+  searchControls(){
+    this.orgCtrl.valueChanges.pipe().subscribe(() => { this.commonMethod.filterArrayDataZone(this.organizationArray,this.orgCtrl,'organizationName',this.orgSubject) });
+    this.unitCtrl.valueChanges.pipe().subscribe(() => { this.commonMethod.filterArrayDataZone(this.allUnits, this.unitCtrl, 'unitName', this.unitSubj) });
+    this.employeeCtrl.valueChanges.pipe().subscribe(() => { this.commonMethod.filterArrayDataZone(this.employeeArray, this.employeeCtrl, 'employeeName', this.employeeSubject) });
   }
 
   getOrganization(obj?:any) {
@@ -120,7 +130,7 @@ export class VisitEntryListComponent {
         if (res.statusCode == "200") {
           this.organizationArray = res.responseData;
           this.commonMethod.filterArrayDataZone(this.organizationArray,this.orgCtrl,'organizationName',this.orgSubject);
-          this.webService.getOrgId() || obj?.organization ? (this.f['organization'].setValue(this.webService.getOrgId() || obj?.organization), this.dropdownClickEvent('org')) : '';
+          this.webService.getOrgId() || obj?.organization ? (this.f['organization'].setValue(this.webService.getOrgId() || obj?.organization)) : '';
           
         }
         else {
@@ -139,7 +149,7 @@ export class VisitEntryListComponent {
         if (res.statusCode == "200") {
           this.allUnits = res.responseData;
           this.commonMethod.filterArrayDataZone(this.allUnits, this.unitCtrl, 'unitName', this.unitSubj);
-          (this.webService.getUnitId() || obj?.unit) ? (this.f['unit'].setValue(this.webService.getUnitId() || obj?.unit), this.dropdownClickEvent('unit')) : '';
+          (this.webService.getUnitId() || obj?.unit) ? (this.f['unit'].setValue(this.webService.getUnitId() || obj?.unit)) : '';
 
         }
         else {
@@ -164,9 +174,11 @@ export class VisitEntryListComponent {
   }
 
   getTableDetails(flag?: any) {
+    this.filterForm.updateValueAndValidity();
     if(this.filterForm.invalid){
       return;
     }else{
+      this.isSearch = true;
       const formData = this.filterForm.getRawValue();
       let str = ('pageno=' + +(this.pageNumber || 0) + '&pagesize=' + 10 + '&UnitId=' + (formData?.unit || 0) + '&PartyIds=' + (formData?.employeeList?.toString() || '') + '&fromDate=' + (this.commonMethod.dateFormat(formData?.fromDate, 'year')) +
         '&organizationId=' + (formData?.organization || 0) + '&toDate=' + (this.commonMethod.dateFormat(formData?.toDate, 'year')));
@@ -205,9 +217,6 @@ export class VisitEntryListComponent {
       this.isChecked = ((arr.length != this.f['employeeList'].value.length) ? false : true);
     }
   }
-  dropdownClickEvent(_status?:any){
-
-  }
 
   clearDependancy(flag: any){
     switch(flag){
@@ -218,5 +227,29 @@ export class VisitEntryListComponent {
 
   redirectToAddVisitEntry(){
     this.commonMethod.routerLinkRedirect('/add-visit-entry');
+  }
+
+  tableClickEvents(obj?: any, status?: any, _index?: any) {
+    switch (status) {
+      case 'Pagination':
+        this.pageNumber = obj.pageIndex + 1;
+        this.selectedIndex = 0;
+        this.getTableDetails();
+        break;
+      // case 'View':
+      //   this.updateMilkCollectionDetails(obj);
+      //   break;
+      // case 'Edit':
+      //   this.updateMilkCollectionDetails(obj);
+      //   break;
+      // case 'Delete':
+      //   this.globalDialogOpen(obj);
+    }
+  }
+
+  resetForm(){
+    this.formDirective && this.formDirective.resetForm();
+    this.createFilterForm();
+    this.isSearch = false;
   }
 }

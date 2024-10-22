@@ -8,7 +8,7 @@
                         download
                     </mat-icon>
                 </button>
-                <button mat-flat-button class="btn-main-outline">
+                <button mat-flat-button class="btn-main-outline" type="button" (click)="redirectToAddVisitEntry()">
                     <mat-icon class="material-symbols-rounded">
                         add
                     </mat-icon>
@@ -29,11 +29,12 @@
                 </div>
             </button>
         </div>
-        <div class="collapse" id="collapseExample">
+        <div [class]="!isSearch ? 'collapse show' : 'collapse'" id="collapseExample">
             <form [formGroup]="filterForm" #formDirective="ngForm" (ngSubmit)="getTableDetails()" class="form-container">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Select Organization</mat-label>
-                    <mat-select formControlName="organization" (selectionChange)="getUnit(); getEmployeeDetails();">
+                    <mat-select formControlName="organization" (selectionChange)="getUnit(); getEmployeeDetails();"
+                    [class]="webService.getOrgId() ? f['organization'].disable({ onlySelf: true }) : f['organization'].enable({ onlySelf: true })">
                         <mat-option>
                             <ngx-mat-select-search [formControl]="orgCtrl" placeholderLabel="Search Organization Name"
                                 noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
@@ -45,7 +46,8 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Select Unit</mat-label>
-                    <mat-select formControlName="unit">
+                    <mat-select formControlName="unit"
+                    [class]="(webService.getUnitId() || !f['organization'].getRawValue()) ? f['unit'].disable({ onlySelf: true }) : f['unit'].enable({ onlySelf: true })">
                         <mat-option>
                             <ngx-mat-select-search [formControl]="unitCtrl" placeholderLabel="Search Unit Name"
                                 noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
@@ -86,210 +88,81 @@
                         <mat-option *ngFor="let p of employeeSubject| async" [value]="p.id">{{p.employeeName}}</mat-option>
                     </mat-select>
                 </mat-form-field>
+                <div>
+                    <button mat-flat-button class="btn-main-light m-2" type="button" (click)="resetForm()">Cancel</button>
+                    <button mat-flat-button type="submit" class="btn-main" >Search</button>
+                </div>
             </form>
         </div>
         <div class="employee-list">
-            <div class="employee">
-                <div class="d-flex justify-content-between align-items-center">
-                    <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee1" role="button"
-                        aria-expanded="false" aria-controls="collapseEmployee1">Dhiraj Kambale</a>
+            <div class="employee" *ngFor="let v of visitEntryArray; let i = index">
+                <div class="d-flex justify-content-between align-items-center" (click)="selectedIndex = i">
+                    <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee{{i}}" role="button"
+                        aria-expanded="false" [attr.aria-controls]="'collapseEmployee' + i">{{v?.customerName}}</a>
                     <button class="btn btn-edit">
                         <mat-icon class="material-symbols-rounded">
                             edit_square
                         </mat-icon>
                     </button>
                 </div>
-                <div class="collapse" id="collapseEmployee1">
+                <div [class]="selectedIndex == i ? 'collapse show' : 'collapse'" id="collapseEmployee{{i}}">
                     <ul class="list-group visit-details list-group-flush">
-                        <li class="list-group-item">
+                        <li class="list-group-item" *ngIf="v?.visitDate">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img src="assets/images/employee/visit-date.svg" alt="visit date">
                                 </div>
                                 <div class="flex-grow-1 ms-2">
-                                    25/09/2024, 2:12 PM
+                                    {{v?.visitDate | date: 'dd/MM/yyyy hh:mm a'}}
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item">
+                        <li class="list-group-item" *ngIf="v?.organizationName">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img src="assets/images/employee/organization.svg" alt="organization">
                                 </div>
                                 <div class="flex-grow-1 ms-2">
-                                    Amul Dairy Pvt Ltd
+                                    {{v?.organizationName}}
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item">
+                        <li class="list-group-item" *ngIf="v?.fromUnitName">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img src="assets/images/employee/unit.svg" alt="Unit..">
                                 </div>
                                 <div class="flex-grow-1 ms-2">
-                                    Branch Unit 1
+                                    {{v?.fromUnitName}}
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item">
+                        <li class="list-group-item" *ngIf="v?.toUnitName">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img src="assets/images/employee/destination.svg" alt="Destination">
                                 </div>
                                 <div class="flex-grow-1 ms-2">
-                                    Doodh Sankalan kendra
+                                    {{v?.toUnitName}}
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item">
+                        <li class="list-group-item" *ngIf="v?.remark">
                             <div class="d-flex align-items-start">
                                 <div class="flex-shrink-0">
                                     <img src="assets/images/employee/visit.svg" alt="Visit">
                                 </div>
                                 <div class="flex-grow-1 ms-2">
-                                    This is some content from a media component. You can replace this with any content
-                                    and
-                                    adjust it as needed.
+                                    {{v?.remark}}
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="employee">
-                <div class="d-flex justify-content-between align-items-center">
-                    <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee2" role="button"
-                        aria-expanded="false" aria-controls="collapseEmployee2">Dhiraj Kambale</a>
-                    <button class="btn btn-edit">
-                        <mat-icon class="material-symbols-rounded">
-                            edit_square
-                        </mat-icon>
-                    </button>
-                </div>
-                <div class="collapse" id="collapseEmployee2">
-                    <ul class="list-group visit-details list-group-flush">
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/visit-date.svg" alt="visit date">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    25/09/2024, 2:12 PM
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/organization.svg" alt="organization">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    Amul Dairy Pvt Ltd
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/unit.svg" alt="Unit..">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    Branch Unit 1
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/destination.svg" alt="Destination">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    Doodh Sankalan kendra
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-start">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/visit.svg" alt="Visit">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    This is some content from a media component. You can replace this with any content
-                                    and
-                                    adjust it as needed.
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="employee">
-                <div class="d-flex justify-content-between align-items-center">
-                    <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee3" role="button"
-                        aria-expanded="false" aria-controls="collapseEmployee3">Dhiraj Kambale</a>
-                    <button class="btn btn-edit">
-                        <mat-icon class="material-symbols-rounded">
-                            edit_square
-                        </mat-icon>
-                    </button>
-                </div>
-                <div class="collapse" id="collapseEmployee3">
-                    <ul class="list-group visit-details list-group-flush">
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/visit-date.svg" alt="visit date">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    25/09/2024, 2:12 PM
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/organization.svg" alt="organization">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    Amul Dairy Pvt Ltd
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/unit.svg" alt="Unit..">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    Branch Unit 1
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/destination.svg" alt="Destination">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    Doodh Sankalan kendra
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-start">
-                                <div class="flex-shrink-0">
-                                    <img src="assets/images/employee/visit.svg" alt="Visit">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    This is some content from a media component. You can replace this with any content
-                                    and
-                                    adjust it as needed.
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <mat-paginator *ngIf="tableDatasize > (totalPages? totalPages:10)" showFirstLastButtons [length]="tableDatasize"
+                (page)="tableClickEvents($event, 'Pagination')" [pageSizeOptions]="[pageSize]" aria-label="Select page" class="m-0">
+            </mat-paginator>
         </div>
     </div>
 </div>
