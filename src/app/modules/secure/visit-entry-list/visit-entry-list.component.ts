@@ -130,7 +130,7 @@ export class VisitEntryListComponent {
         if (res.statusCode == "200") {
           this.organizationArray = res.responseData;
           this.commonMethod.filterArrayDataZone(this.organizationArray,this.orgCtrl,'organizationName',this.orgSubject);
-          this.webService.getOrgId() || obj?.organization ? (this.f['organization'].setValue(this.webService.getOrgId() || obj?.organization)) : '';
+          this.webService.getOrgId() || obj?.organization ? (this.f['organization'].setValue(this.webService.getOrgId() || obj?.organization),this.getUnit(obj)) : '';
           
         }
         else {

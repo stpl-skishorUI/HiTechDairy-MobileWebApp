@@ -106,6 +106,8 @@ export class AddVisitEntryComponent {
         if (res.statusCode == "200") {
           this.unitArray = res.responseData;
           this.toUnitArray = res.responseData;
+          this.f['unitId'].setValue(this.editObj?.unitId ? this.editObj?.unitId : this.webService.getUnitId());
+          this.f['fromUnitId'].setValue(this.editObj?.fromUnitId ? this.editObj?.fromUnitId : '');
           this.commonService.filterArrayDataZone(this.unitArray, this.unitCtrl, 'unitName', this.unitSubject);
           this.commonService.filterArrayDataZone(this.toUnitArray,this.toUnitCtrl,'unitName',this.toUnitSubject) ;
         }

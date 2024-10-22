@@ -6,7 +6,8 @@
         <div class="card-body p-2">
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Select Organization</mat-label>
-                <mat-select formControlName="organizationId" (selectionChange)="getUnit(); getEmployees()">
+                <mat-select formControlName="organizationId" (selectionChange)="getUnit(); getEmployees()"
+                [class]="(webService.getOrgId()  || editObj) ? f['organizationId'].disable({ onlySelf: true }) : f['organizationId'].enable({ onlySelf: true })">
                     <mat-option>
                         <ngx-mat-select-search
                             placeholderLabel="Search Organization Name"
