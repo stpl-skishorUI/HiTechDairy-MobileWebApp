@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 export function httpTranslateLoaderFactory(http: HttpClient) {
 }
 
@@ -21,7 +22,9 @@ export function httpTranslateLoaderFactory(http: HttpClient) {
     HttpClientModule,
     MatSnackBarModule,
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
