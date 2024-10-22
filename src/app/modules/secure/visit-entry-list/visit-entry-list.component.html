@@ -20,7 +20,7 @@
     <div class="card-body p-2">
         <div class="d-flex justify-content-end mb-2">
             <button class="btn btn-filter shadow-none btn-default btn-sm" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" [class]="!isSearch ? '' : 'collapsed'">
                 <div class="d-flex align-items-center gap-2">
                     <mat-icon class="material-symbols-rounded">
                         filter_list
@@ -159,6 +159,9 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+            <div *ngIf="!visitEntryArray?.length && isSearch">
+                <img src="assets/images/no-data-found/no_data_found.png"/>
             </div>
             <mat-paginator *ngIf="tableDatasize > (totalPages? totalPages:10)" showFirstLastButtons [length]="tableDatasize"
                 (page)="tableClickEvents($event, 'Pagination')" [pageSizeOptions]="[pageSize]" aria-label="Select page" class="m-0">
