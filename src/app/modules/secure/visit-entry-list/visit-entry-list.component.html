@@ -3,11 +3,11 @@
         <div class="d-flex justify-content-between align-items-center">
             <span>Visit Entry List</span>
             <div class="d-flex gap-2">
-                <button mat-flat-button class="btn-main-light btn-icon">
+                <!-- <button mat-flat-button class="btn-main-light btn-icon">
                     <mat-icon class="material-symbols-rounded">
                         download
                     </mat-icon>
-                </button>
+                </button> -->
                 <button mat-flat-button class="btn-main-outline" type="button" (click)="redirectToAddVisitEntry()">
                     <mat-icon class="material-symbols-rounded">
                         add
@@ -99,11 +99,11 @@
                 <div class="d-flex justify-content-between align-items-center" (click)="selectedIndex = i">
                     <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee{{i}}" role="button"
                         aria-expanded="false" [attr.aria-controls]="'collapseEmployee' + i">{{v?.customerName}}</a>
-                    <button class="btn btn-edit">
+                    <!-- <button class="btn btn-edit">
                         <mat-icon class="material-symbols-rounded">
                             edit_square
                         </mat-icon>
-                    </button>
+                    </button> -->
                 </div>
                 <div [class]="selectedIndex == i ? 'collapse show' : 'collapse'" id="collapseEmployee{{i}}">
                     <ul class="list-group visit-details list-group-flush">
