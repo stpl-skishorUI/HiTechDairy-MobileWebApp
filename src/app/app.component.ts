@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import { filter } from 'rxjs';
 import { ConfigService } from './core/services/config.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,13 @@ export class AppComponent {
     this.scrollTop();
   }
 
-
+  ngOnInit(){
+    if (environment.production) { // redirect forcefully to https
+      if (location.protocol === 'http:') {
+        window.location.href = location.href.replace('http', 'https');
+      }
+    }
+  }
 
 
 
