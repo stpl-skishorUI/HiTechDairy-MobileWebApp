@@ -99,11 +99,16 @@
                 <div class="d-flex justify-content-between align-items-center" (click)="selectedIndex = i">
                     <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee{{i}}" role="button"
                         aria-expanded="false" [attr.aria-controls]="'collapseEmployee' + i">{{v?.customerName}}</a>
-                    <!-- <button class="btn btn-edit">
+                    <button class="btn btn-edit" (click)="tableClickEvents(v, 'Edit')">
                         <mat-icon class="material-symbols-rounded">
                             edit_square
                         </mat-icon>
-                    </button> -->
+                    </button>
+                    <button class="btn btn-delete" (click)="tableClickEvents(v, 'Delete')">
+                        <mat-icon class="material-symbols-rounded">
+                            delete
+                        </mat-icon>
+                    </button>
                 </div>
                 <div [class]="selectedIndex == i ? 'collapse show' : 'collapse'" id="collapseEmployee{{i}}">
                     <ul class="list-group visit-details list-group-flush">

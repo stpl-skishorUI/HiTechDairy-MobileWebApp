@@ -18,6 +18,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MasterService } from 'src/app/core/services/master.service';
 import { AESEncryptDecryptService } from 'src/app/core/services/aesencrypt-decrypt.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogT1Component } from 'src/app/shared/components/confirmation-dialog-t1/confirmation-dialog-t1.component';
 
 @Component({
   selector: 'app-visit-entry-list',
@@ -34,6 +36,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    MatDialogModule,
     MatPaginatorModule,
     NgxMatSelectSearchModule
   ],
@@ -75,6 +78,7 @@ export class VisitEntryListComponent {
     private commonMethod: CommonMethodsService,
     private apiService: ApiService,
     private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog, 
     private AESEncryptDecryptService: AESEncryptDecryptService,
     private masterService: MasterService,
     private errorService: ErrorService) {
@@ -239,12 +243,48 @@ export class VisitEntryListComponent {
       // case 'View':
       //   this.updateMilkCollectionDetails(obj);
       //   break;
-      // case 'Edit':
-      //   this.updateMilkCollectionDetails(obj);
-      //   break;
-      // case 'Delete':
-      //   this.globalDialogOpen(obj);
+      case 'Edit':
+        this.commonMethod.routerLinkRedirect('/add-visit-entry', 1, obj?.id, false);
+        break;
+      case 'Delete':
+        this.globalDialogOpen(obj);
+        break;
     }
+  }
+
+  globalDialogOpen(delObj?: any) {
+    let dialogObj = {
+      title: 'Do You Want To Delete Selected Entry',
+      header: 'delete',
+      okButton: 'delete',
+      cancelButton: 'cancel',
+    };
+    const dialogRef = this.dialog.open(ConfirmationDialogT1Component, {
+      width: '320px',
+      maxWidth: '320px',
+      data: dialogObj,
+      disableClose: true,
+      autoFocus: false,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'Yes') {
+        this.apiService.setHttp('delete', 'api/VisitEntry/DeleteVisitEntryById?id=' + (delObj?.id || 0), false, false, false, 'priyadarshaniService');
+        this.apiService.getHttp().subscribe({
+          next: (res: any) => {
+            if (res.statusCode == '200') {
+              this.commonMethod.matSnackBar(res.statusMessage, 0);
+              this.getTableDetails();
+            } else {
+              this.commonMethod.matSnackBar(res.statusMessage, 1);
+            }
+          },
+          error: (error: any) => {
+            this.errorService.handleError(error.status);
+          },
+        });
+      }
+      this.getTableDetails();
+    });
   }
 
   resetForm(){
