@@ -20,7 +20,8 @@
     <div class="card-body p-2">
         <div class="d-flex justify-content-end mb-2">
             <button class="btn btn-filter shadow-none btn-default btn-sm" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseExample" [attr.aria-expanded]="!visitEntryArray.length ? false : true" aria-controls="collapseExample" [class]="!visitEntryArray.length ? '' : 'collapsed'">
+                data-bs-target="#collapseExample" [attr.aria-expanded]="!visitEntryArray.length ? false : true"
+                aria-controls="collapseExample" [class]="!visitEntryArray.length ? '' : 'collapsed'">
                 <div class="d-flex align-items-center gap-2">
                     <mat-icon class="material-symbols-rounded">
                         filter_list
@@ -30,11 +31,12 @@
             </button>
         </div>
         <div [class]="!visitEntryArray.length ? 'collapse show' : 'collapse'" id="collapseExample">
-            <form [formGroup]="filterForm" #formDirective="ngForm" (ngSubmit)="getTableDetails()" class="form-container">
+            <form [formGroup]="filterForm" #formDirective="ngForm" (ngSubmit)="getTableDetails()"
+                class="form-container">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Select Organization</mat-label>
                     <mat-select formControlName="organization" (selectionChange)="getUnit(); getEmployeeDetails();"
-                    [class]="webService.getOrgId() ? f['organization'].disable({ onlySelf: true }) : f['organization'].enable({ onlySelf: true })">
+                        [class]="webService.getOrgId() ? f['organization'].disable({ onlySelf: true }) : f['organization'].enable({ onlySelf: true })">
                         <mat-option>
                             <ngx-mat-select-search [formControl]="orgCtrl" placeholderLabel="Search Organization Name"
                                 noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
@@ -47,20 +49,21 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Select Unit</mat-label>
                     <mat-select formControlName="unit"
-                    [class]="(webService.getUnitId() || !f['organization'].getRawValue()) ? f['unit'].disable({ onlySelf: true }) : f['unit'].enable({ onlySelf: true })">
+                        [class]="(webService.getUnitId() || !f['organization'].getRawValue()) ? f['unit'].disable({ onlySelf: true }) : f['unit'].enable({ onlySelf: true })">
                         <mat-option>
                             <ngx-mat-select-search [formControl]="unitCtrl" placeholderLabel="Search Unit Name"
                                 noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
                         </mat-option>
-                        <mat-option *ngFor="let unit of unitSubj | async" [value]="unit.id">{{unit?.unitName}}</mat-option>
+                        <mat-option *ngFor="let unit of unitSubj | async"
+                            [value]="unit.id">{{unit?.unitName}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <div class="row gx-2">
                     <div class="col-6">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>From Date</mat-label>
-                            <input matInput formControlName="fromDate" (click)="picker.open()" 
-                            [matDatepicker]="picker" readonly [max]="currentDate">
+                            <input matInput formControlName="fromDate" (click)="picker.open()" [matDatepicker]="picker"
+                                readonly [max]="currentDate">
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
@@ -68,29 +71,33 @@
                     <div class="col-6">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>To Date</mat-label>
-                            <input matInput [matDatepicker]="pickers" 
-                            (click)="pickers.open()" formControlName="toDate" readonly [max]="currentDate" >
+                            <input matInput [matDatepicker]="pickers" (click)="pickers.open()" formControlName="toDate"
+                                readonly [max]="currentDate">
                             <!-- [max]="fields?.fromDate?.isFYearDependent ? dateObj?.max : fields?.toDate?.isMax ? currentDate : ''" -->
-                        <mat-datepicker-toggle matIconSuffix [for]="pickers"></mat-datepicker-toggle>
-                        <mat-datepicker #pickers></mat-datepicker>
+                            <mat-datepicker-toggle matIconSuffix [for]="pickers"></mat-datepicker-toggle>
+                            <mat-datepicker #pickers></mat-datepicker>
                         </mat-form-field>
                     </div>
                 </div>
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Select Employee</mat-label>
                     <mat-select [multiple]="true" formControlName="employeeList"
-                    [class]=" (!f['organization'].getRawValue() )? f['employeeList'].disable({ onlySelf: true }) : f['employeeList'].enable({ onlySelf: true })">
+                        [class]=" (!f['organization'].getRawValue() )? f['employeeList'].disable({ onlySelf: true }) : f['employeeList'].enable({ onlySelf: true })">
                         <mat-option>
-                            <ngx-mat-select-search [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAll($event, 'All')" [toggleAllCheckboxChecked]="isChecked"
-                            [formControl]="employeeCtrl" [toggleAllCheckboxTooltipMessage]="tooltipMessage" placeholderLabel="Search Employee Name"
-                            [toggleAllCheckboxTooltipPosition]="'above'" noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
+                            <ngx-mat-select-search [showToggleAllCheckbox]="true"
+                                (toggleAll)="toggleSelectAll($event, 'All')" [toggleAllCheckboxChecked]="isChecked"
+                                [formControl]="employeeCtrl" [toggleAllCheckboxTooltipMessage]="tooltipMessage"
+                                placeholderLabel="Search Employee Name" [toggleAllCheckboxTooltipPosition]="'above'"
+                                noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
                         </mat-option>
-                        <mat-option *ngFor="let p of employeeSubject| async" [value]="p.id">{{p.employeeName}}</mat-option>
+                        <mat-option *ngFor="let p of employeeSubject| async"
+                            [value]="p.id">{{p.employeeName}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <div>
-                    <button mat-flat-button class="btn-main-light m-2" type="button" (click)="resetForm()">Cancel</button>
-                    <button mat-flat-button type="submit" class="btn-main" >Search</button>
+                    <button mat-flat-button class="btn-main-light m-2" type="button"
+                        (click)="resetForm()">Cancel</button>
+                    <button mat-flat-button type="submit" class="btn-main">Search</button>
                 </div>
             </form>
         </div>
@@ -99,12 +106,14 @@
                 <div class="d-flex justify-content-between align-items-center" (click)="selectedIndex = i">
                     <a class="employee-name" data-bs-toggle="collapse" href="#collapseEmployee{{i}}" role="button"
                         aria-expanded="false" [attr.aria-controls]="'collapseEmployee' + i">{{v?.customerName}}</a>
-                    <button class="btn btn-edit" (click)="tableClickEvents(v, 'Edit')">
+                    <button mat-flat-button class="btn-icon-mini bg-primary-subtle text-primary"
+                        (click)="tableClickEvents(v, 'Edit')">
                         <mat-icon class="material-symbols-rounded">
                             edit_square
                         </mat-icon>
                     </button>
-                    <button class="btn btn-delete" (click)="tableClickEvents(v, 'Delete')">
+                    <button mat-flat-button class="btn-icon-mini bg-danger-subtle text-danger"
+                        (click)="tableClickEvents(v, 'Delete')">
                         <mat-icon class="material-symbols-rounded">
                             delete
                         </mat-icon>
@@ -166,10 +175,11 @@
                 </div>
             </div>
             <div *ngIf="!visitEntryArray?.length && isSearch">
-                <img src="assets/images/no-data-found/no_data_found.png"/>
+                <img src="assets/images/no-data-found/no_data_found.png" class="img-fluid" />
             </div>
-            <mat-paginator *ngIf="tableDatasize > (totalPages? totalPages:10)" showFirstLastButtons [length]="tableDatasize"
-                (page)="tableClickEvents($event, 'Pagination')" [pageSizeOptions]="[pageSize]" aria-label="Select page" class="m-0">
+            <mat-paginator *ngIf="tableDatasize > (totalPages? totalPages:10)" showFirstLastButtons
+                [length]="tableDatasize" (page)="tableClickEvents($event, 'Pagination')" [pageSizeOptions]="[pageSize]"
+                aria-label="Select page" class="m-0">
             </mat-paginator>
         </div>
     </div>
