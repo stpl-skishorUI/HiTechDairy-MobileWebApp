@@ -170,6 +170,7 @@ export class AddVisitEntryComponent {
 
   resetForm(flag?:any){
     this.formDirective && this.formDirective.resetForm();
-    this.commonService.routerLinkRedirect('/visit-entry-list');
+    this.commonService.routerLinkRedirect('/visit-entry-list/' + this.webService.getLoggedInLocalstorageData()?.mobileNo);
+    // this.commonService.routerLinkRedirect('/visit-entry-list', 1, this.webService.getLoggedInLocalstorageData()?.mobileNo, false);
   }
 }
