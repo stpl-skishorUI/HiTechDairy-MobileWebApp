@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-confirmation-dialog-t1',
@@ -10,4 +11,11 @@ import { CommonModule } from '@angular/common';
 })
 export class ConfirmationDialogT1Component {
 
+  constructor(public dialogRef: MatDialogRef<ConfirmationDialogT1Component>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  ngOnInit(): void { }
+
+  closeDialog(result: string) {
+    this.dialogRef.close(result);
+  }
 }
