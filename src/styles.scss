@@ -23,6 +23,19 @@ body {
     --main-dark-color: rgb(11, 121, 137);
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+small {
+    font-family: var(--default-font);
+    letter-spacing: normal;
+}
+
 .bg-main {
     background-color: var(--main-color);
     color: #fff;
@@ -54,6 +67,7 @@ a.text-main:hover {
     font-family: var(--default-font);
     letter-spacing: 0px !important;
     border-radius: 0.375rem !important;
+    height: 36px !important;
 }
 
 .btn-default .material-symbols-rounded {
@@ -143,8 +157,45 @@ a.text-main:hover {
     font-size: 0.85rem;
 }
 
+.modal-body {
+    padding: 15px 15px;
+}
+
+.modal-footer {
+    font-family: var(--default-font) !important;
+    font-size: 0.85rem;
+    padding: 10px 15px;
+    border-top: solid 1px var(--bs-border-color) !important;
+}
+
+.modal-header {
+    font-family: var(--default-font) !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #151515 !important;
+    padding: 5px 15px !important;
+    background-color: #f0f0f0 !important;
+}
+
+.mdc-dialog__title::before {
+    height: 0 !important;
+    display: none !important;
+}
+
+button.btn-modal-close {
+    @include mat.all-component-densities(-3);
+    padding: 0 !important;
+}
+
+.btn-modal-close .material-symbols-rounded {
+    font-size: 1.2rem !important;
+    height: 18px;
+    width: 19px;
+}
+
 .fs-main {
     font-size: 0.85rem;
+    font-family: var(--default-font);
 }
 
 .scrollbar {
