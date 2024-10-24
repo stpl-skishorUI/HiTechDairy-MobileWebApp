@@ -3,15 +3,14 @@
         <span>Add Visit Entry</span>
     </div>
     <form [formGroup]="registerForm" #formDirective="ngForm" (ngSubmit)="onSubmit()" class="form-container">
-        <div class="card-body p-2">
+        <div class="card-body p-2 form-height">
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Select Organization</mat-label>
                 <mat-select formControlName="organizationId" (selectionChange)="getUnit(); getEmployees()"
-                [class]="(webService.getOrgId()  || editObj) ? f['organizationId'].disable({ onlySelf: true }) : f['organizationId'].enable({ onlySelf: true })">
+                    [class]="(webService.getOrgId()  || editObj) ? f['organizationId'].disable({ onlySelf: true }) : f['organizationId'].enable({ onlySelf: true })">
                     <mat-option>
-                        <ngx-mat-select-search
-                            placeholderLabel="Search Organization Name"
-                            [formControl]="orgCtrl" noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
+                        <ngx-mat-select-search placeholderLabel="Search Organization Name" [formControl]="orgCtrl"
+                            noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
                     </mat-option>
                     <mat-option *ngFor="let org of orgSubject | async" [value]="org.id">{{
                         org.organizationName}}
@@ -23,9 +22,8 @@
                 <mat-select formControlName="unitId"
                     [class]="((webService.getUnitId() || !f['organizationId'].getRawValue()) || editObj) ? f['unitId'].disable({ onlySelf: true }) : f['unitId'].enable({ onlySelf: true })">
                     <mat-option>
-                        <ngx-mat-select-search
-                            placeholderLabel="Search Destination Unit"
-                            [formControl]="unitCtrl" noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
+                        <ngx-mat-select-search placeholderLabel="Search Destination Unit" [formControl]="unitCtrl"
+                            noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
                     </mat-option>
                     <mat-option *ngFor="let u of unitSubject | async" [value]="u?.id"
                         [disabled]="u?.id==f['fromUnitId'].getRawValue()">{{ u?.unitName}}</mat-option>
@@ -36,8 +34,8 @@
                 <mat-select formControlName="fromUnitId"
                     [class]="(!f['organizationId'].getRawValue() || !f['unitId'].getRawValue() || editObj) ? f['fromUnitId'].disable({ onlySelf: true }) : f['fromUnitId'].enable({ onlySelf: true })">
                     <mat-option>
-                        <ngx-mat-select-search placeholderLabel="Search Source Unit"
-                            [formControl]="toUnitCtrl" noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
+                        <ngx-mat-select-search placeholderLabel="Search Source Unit" [formControl]="toUnitCtrl"
+                            noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
                     </mat-option>
                     <mat-option *ngFor="let u of toUnitSubject | async" [value]="u?.id"
                         [disabled]="u?.id==f['unitId'].getRawValue()">{{ u?.unitName}}</mat-option>
@@ -48,8 +46,8 @@
                 <mat-select formControlName="employeeId"
                     [class]="(!f['organizationId'].getRawValue() || editObj) ? f['employeeId'].disable({ onlySelf: true }) : f['employeeId'].enable({ onlySelf: true })">
                     <mat-option>
-                        <ngx-mat-select-search placeholderLabel="Search Employee Name"
-                            [formControl]="employeeCtrl" noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
+                        <ngx-mat-select-search placeholderLabel="Search Employee Name" [formControl]="employeeCtrl"
+                            noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
                     </mat-option>
                     <mat-option *ngFor="let employee of employeeSubject | async" [value]="employee.id">{{
                         employee.employeeName}}
@@ -74,16 +72,18 @@
             </div>
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Visit Details</mat-label>
-                <textarea matInput rows="2" formControlName="visitDetails"></textarea>
+                <textarea matInput rows="4" formControlName="visitDetails"></textarea>
             </mat-form-field>
         </div>
-        <div class="card-footer px-2 pt-0">
+        <div class="card-footer px-2">
             <div class="d-flex justify-content-end gap-2">
                 <!-- <button mat-flat-button class="btn-main-light">Cancel</button>
                 <button mat-flat-button class="btn-main">Submit</button> -->
                 <button mat-flat-button class="btn-main-light" type="button" (click)="resetForm()">Cancel</button>
-                <button mat-flat-button type="submit" class="btn-main" *ngIf="!editObj || editFlag">{{(!editFlag ? 'Submit' : 'Update')}}</button>
-                <button mat-flat-button type="button" (click)="editFlag = true; getOrganation()"  class="btn-main" *ngIf="editObj && !editFlag">Edit</button>
+                <button mat-flat-button type="submit" class="btn-main" *ngIf="!editObj || editFlag">{{(!editFlag ?
+                    'Submit' : 'Update')}}</button>
+                <button mat-flat-button type="button" (click)="editFlag = true; getOrganation()" class="btn-main"
+                    *ngIf="editObj && !editFlag">Edit</button>
             </div>
         </div>
     </form>
