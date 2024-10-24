@@ -15,6 +15,7 @@ import { ApiService } from 'src/app/core/services/api.service';
 import { WebStorageService } from 'src/app/core/services/web-storage.service';
 import { CommonMethodsService } from 'src/app/core/services/common-methods.service';
 import { ErrorService } from 'src/app/core/services/error.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-visit-entry',
@@ -53,17 +54,38 @@ export class AddVisitEntryComponent {
   employeeSubject: ReplaySubject<any> = new ReplaySubject<any>();
   editObj:any;
   editFlag:boolean=false;
+  urlData: any;
   @ViewChild('formDirective') private formDirective!: NgForm;
   constructor( private fb:FormBuilder, public webService:WebStorageService, public commonService:CommonMethodsService,
     private masterService:MasterService, private apiService:ApiService, 
-    private errorService:ErrorService
+    private errorService:ErrorService, 
+    private activatedRoute: ActivatedRoute,
   ){
-
+    this.urlData = this.commonService.decriptRouterURLQueryParams(this.activatedRoute.queryParams);
+    this.editFlag = true;
   }
   ngOnInit(){
     this.getFormControls();
     this.searchDataZone();
-    !this.editObj ? this.getOrganation() : '';
+    !this.editFlag ? this.getOrganation() : this.getDetailsById(this.urlData?.id);;
+  }
+
+  getDetailsById(id: any){
+    this.apiService.setHttp('GET', 'api/VisitEntry/GetVisitEntryById?id=' + id, false, false, false, 'priyadarshaniService');
+    this.apiService.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode == 200) {
+          this.editObj = res?.responseData;
+          this.getFormControls(this.editObj);
+          this.getOrganation();
+        } else {
+          this.commonService.matSnackBar(res.statusMessage, 1)
+        }
+      },
+      error: (err: any) => {
+        this.errorService.handleError(err.status);
+      },
+    });
   }
 
   getFormControls(data?:any){
@@ -106,7 +128,7 @@ export class AddVisitEntryComponent {
         if (res.statusCode == "200") {
           this.unitArray = res.responseData;
           this.toUnitArray = res.responseData;
-          this.f['unitId'].setValue(this.editObj?.unitId ? this.editObj?.unitId : this.webService.getUnitId());
+          this.f['unitId'].setValue(this.editObj?.toUnitId ? this.editObj?.toUnitId : this.webService.getUnitId());
           this.f['fromUnitId'].setValue(this.editObj?.fromUnitId ? this.editObj?.fromUnitId : '');
           this.commonService.filterArrayDataZone(this.unitArray, this.unitCtrl, 'unitName', this.unitSubject);
           this.commonService.filterArrayDataZone(this.toUnitArray,this.toUnitCtrl,'unitName',this.toUnitSubject) ;
