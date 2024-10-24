@@ -24,6 +24,7 @@
     font-weight: 600;
     color: var(--main-color);
     text-decoration: none;
+    text-transform: capitalize;
 }
 
 .employee-list .employee .employee-name:hover {
@@ -39,15 +40,14 @@
 .employee-list .employee .btn-edit {
     font-size: 0.8rem;
     height: 28px;
+    line-height: 28px;
     width: 28px;
-    padding: 0px;
+    padding: 2px;
     border: none;
-    background-color: #eee;
 }
 
 .employee-list .employee .btn-edit .material-symbols-rounded {
     height: 14px;
-    color: #757575;
 }
 
 .employee-list .employee .visit-details {
