@@ -62,7 +62,7 @@ export class AddVisitEntryComponent {
     private activatedRoute: ActivatedRoute,
   ){
     this.urlData = this.commonService.decriptRouterURLQueryParams(this.activatedRoute.queryParams);
-    this.editFlag = true;
+    this.editFlag = this.urlData?.id ? true : false ;
   }
   ngOnInit(){
     this.getFormControls();

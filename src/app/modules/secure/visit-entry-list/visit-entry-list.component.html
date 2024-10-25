@@ -22,7 +22,7 @@
             <button class="btn btn-filter shadow-none btn-default btn-sm" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseExample" [attr.aria-expanded]="!visitEntryArray.length ? false : true"
                 aria-controls="collapseExample" [class]="!visitEntryArray.length ? '' : 'collapsed'">
-                <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2" (click)="visitEntryArray=[];isSearch=false;tableDatasize=0">
                     <mat-icon class="material-symbols-rounded">
                         filter_list
                     </mat-icon>
@@ -30,13 +30,13 @@
                 </div>
             </button>
         </div>
-        <div [class]="!visitEntryArray.length ? 'collapse show' : 'collapse'" id="collapseExample">
+        <div [class]="!visitEntryArray.length ? 'collapse show' : 'collapse'" id="collapseExample" *ngIf="isFormLoaded">
             <form [formGroup]="filterForm" #formDirective="ngForm" (ngSubmit)="getTableDetails()"
                 class="form-container">
-                <mat-form-field appearance="outline" class="w-100">
+                <mat-form-field appearance="outline" class="w-100" *ngIf="!localStorageOrgId">
                     <mat-label>Select Organization</mat-label>
                     <mat-select formControlName="organization" (selectionChange)="getUnit(); getEmployeeDetails();"
-                        [class]="webService.getOrgId() ? f['organization'].disable({ onlySelf: true }) : f['organization'].enable({ onlySelf: true })">
+                        [class]="localStorageOrgId ? f['organization'].disable({ onlySelf: true }) : f['organization'].enable({ onlySelf: true })">
                         <mat-option>
                             <ngx-mat-select-search [formControl]="orgCtrl" placeholderLabel="Search Organization Name"
                                 noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
@@ -46,10 +46,10 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="w-100">
+                <mat-form-field appearance="outline" class="w-100" *ngIf="!localStorageUnitId">
                     <mat-label>Select Unit</mat-label>
                     <mat-select formControlName="unit"
-                        [class]="(webService.getUnitId() || !f['organization'].getRawValue()) ? f['unit'].disable({ onlySelf: true }) : f['unit'].enable({ onlySelf: true })">
+                        [class]="!f['organization'].getRawValue() ? f['unit'].disable({ onlySelf: true }) : f['unit'].enable({ onlySelf: true })">
                         <mat-option>
                             <ngx-mat-select-search [formControl]="unitCtrl" placeholderLabel="Search Unit Name"
                                 noEntriesFoundLabel="No Data Found"></ngx-mat-select-search>
@@ -96,7 +96,7 @@
                 </mat-form-field>
                 <div>
                     <button mat-flat-button class="btn-main-light m-2" type="button"
-                        (click)="resetForm()">Cancel</button>
+                        (click)="resetForm()">Clear</button>
                     <button mat-flat-button type="submit" class="btn-main">Search</button>
                 </div>
             </form>
@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item" *ngIf="v?.organizationName">
+                        <li class="list-group-item" *ngIf="!localStorageOrgId">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img src="assets/images/employee/organization.svg" alt="organization">
@@ -141,7 +141,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item" *ngIf="v?.fromUnitName">
+                        <li class="list-group-item" *ngIf="!localStorageUnitId">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img src="assets/images/employee/unit.svg" alt="Unit..">

@@ -20,7 +20,8 @@ export class ConfirmationDialogT1Component {
 
   constructor(public dialogRef: MatDialogRef<ConfirmationDialogT1Component>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+   }
 
   closeDialog(result: string) {
     this.dialogRef.close(result);

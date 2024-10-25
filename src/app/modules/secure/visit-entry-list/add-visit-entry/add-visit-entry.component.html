@@ -4,7 +4,7 @@
     </div>
     <form [formGroup]="registerForm" #formDirective="ngForm" (ngSubmit)="onSubmit()" class="form-container">
         <div class="card-body p-2 form-height">
-            <mat-form-field appearance="outline" class="w-100">
+            <mat-form-field appearance="outline" class="w-100" *ngIf="!webService.getOrgId()">
                 <mat-label>Select Organization</mat-label>
                 <mat-select formControlName="organizationId" (selectionChange)="getUnit(); getEmployees()"
                     [class]="(webService.getOrgId()  || editObj) ? f['organizationId'].disable({ onlySelf: true }) : f['organizationId'].enable({ onlySelf: true })">
@@ -17,7 +17,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="w-100">
+            <mat-form-field appearance="outline" class="w-100" *ngIf="!webService.getUnitId()">
                 <mat-label>Select Destination Unit</mat-label>
                 <mat-select formControlName="unitId"
                     [class]="((webService.getUnitId() || !f['organizationId'].getRawValue()) || editObj) ? f['unitId'].disable({ onlySelf: true }) : f['unitId'].enable({ onlySelf: true })">

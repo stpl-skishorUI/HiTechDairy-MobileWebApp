@@ -72,7 +72,9 @@ export class VisitEntryListComponent {
   currentDate=new Date()
   selectedIndex: number = 0;
   isSearch: boolean = false;
-
+  localStorageUnitId:any=0;
+  localStorageOrgId:any=0;
+  isFormLoaded:boolean=false;
   constructor(public webService: WebStorageService,
     private fb: FormBuilder,
     private commonMethod: CommonMethodsService,
@@ -83,43 +85,59 @@ export class VisitEntryListComponent {
     private masterService: MasterService,
     private errorService: ErrorService) {
       this.activatedRoute.params.subscribe(params => {
-        this.getLoggedInUserDetails(params['id']);
+      //  this.getLoggedInUserDetails(params['id']);
+      
+      if(params['id'] != this.webService?.getLoggedInLocalstorageData()?.mobileNo){
+        var req = { mobileNo: params['id'] };
+        this.apiService.setHttp('POST', 'Login/UserLoginBymobile', false, req, false, 'priyadarshaniService');
+          this.apiService.getHttp().subscribe({
+            next: (res: any) => {
+              if (res.statusCode == 200) {
+                sessionStorage.setItem('loggedIn', 'true');            
+                var loginData:any = this.AESEncryptDecryptService.encrypt(JSON.stringify(res?.responseData));            
+                localStorage.setItem('mobileUserLoggedInData', loginData);
+                this.localStorageOrgId = (res?.responseData?.organizationId || '') ;
+                this.localStorageUnitId = (res?.responseData?.unitId || '') ;
+              } else {
+                this.commonMethod.matSnackBar(res.statusMessage, 1)
+              }
+              this.isFormLoaded=true;
+            },
+            error: (err: any) => {
+              this.errorService.handleError(err.status);
+            },
+          });
+      }else{
+        this.isFormLoaded=true;
+        this.localStorageOrgId = (this.webService.getOrgId()) ;
+        this.localStorageUnitId = (this.webService.getUnitId()) ;
+      }
+        
       });
+     
     }
 
   ngOnInit(){
     this.searchControls();
-    this.createFilterForm();
-    this.getOrganization();
+    this.webService.getFilterFromLocalStorage() ? (this.createFilterForm(this.webService.getFilterFromLocalStorage())) : this.createFilterForm();
   }
 
-  getLoggedInUserDetails(mNo: any){
-    var req = { mobileNo: mNo };
-    this.apiService.setHttp('POST', 'Login/UserLoginBymobile', false, req, false, 'priyadarshaniService');
-      this.apiService.getHttp().subscribe({
-        next: (res: any) => {
-          if (res.statusCode == 200) {
-            sessionStorage.setItem('loggedIn', 'true');            
-            var loginData = this.AESEncryptDecryptService.encrypt(JSON.stringify(res?.responseData));            
-            localStorage.setItem('mobileUserLoggedInData', loginData);
-          } else {
-            this.commonMethod.matSnackBar(res.statusMessage, 1)
-          }
-        },
-        error: (err: any) => {
-          this.errorService.handleError(err.status);
-        },
-      });
-  }
+  // getLoggedInUserDetails(mNo: any){
+   
+  // }
 
-  createFilterForm(){
+  createFilterForm(obj?:any){
     this.filterForm = this.fb.group({
-      organization: [this.webService.getOrgId() || '',[Validators.required]],
-      unit: [this.webService.getUnitId() || '',[Validators.required]],
-      fromDate: [new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1)],
-      toDate: [new Date()],
-      employeeList: ['',[Validators.required]],
+      organization: [obj?.organization ? obj?.organization : this.localStorageOrgId || '',[Validators.required]],
+      unit: [obj?.unit ? obj?.unit :this.localStorageUnitId || '',[Validators.required]],
+      fromDate: [obj?.fromDate ? new Date(obj?.fromDate) : new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1)],
+      toDate: [obj?.toDate ? new Date(obj?.toDate) : new Date()],
+      employeeList: [obj?.employeeList ? obj?.employeeList :'',[Validators.required]],
     })
+    setTimeout(() => {
+    obj ? this.getTableDetails() :'';
+    this.getOrganization(obj);
+    }, 1000);
   }
 
   searchControls(){
@@ -134,7 +152,7 @@ export class VisitEntryListComponent {
         if (res.statusCode == "200") {
           this.organizationArray = res.responseData;
           this.commonMethod.filterArrayDataZone(this.organizationArray,this.orgCtrl,'organizationName',this.orgSubject);
-          this.webService.getOrgId() || obj?.organization ? (this.f['organization'].setValue(this.webService.getOrgId() || obj?.organization),this.getUnit(obj)) : '';
+          this.localStorageOrgId || obj?.organization ? (this.f['organization'].setValue(this.localStorageOrgId || obj?.organization),this.getUnit(obj), this.getEmployeeDetails(obj)) : '';
           
         }
         else {
@@ -153,7 +171,7 @@ export class VisitEntryListComponent {
         if (res.statusCode == "200") {
           this.allUnits = res.responseData;
           this.commonMethod.filterArrayDataZone(this.allUnits, this.unitCtrl, 'unitName', this.unitSubj);
-          (this.webService.getUnitId() || obj?.unit) ? (this.f['unit'].setValue(this.webService.getUnitId() || obj?.unit)) : '';
+          (this.localStorageUnitId || obj?.unit) ? (this.f['unit'].setValue(this.localStorageUnitId || obj?.unit)) : '';
 
         }
         else {
@@ -163,12 +181,13 @@ export class VisitEntryListComponent {
     })
   }
 
-  getEmployeeDetails() {
+  getEmployeeDetails(obj?:any) {
     this.masterService.getAllEmployeeByOrg((this.f['organization'].getRawValue() || 0)).subscribe({
       next: ((res: any) => {
         if (res.statusCode == "200") {
           this.employeeArray = res.responseData;
           this.commonMethod.filterArrayDataZone(this.employeeArray, this.employeeCtrl, 'employeeName', this.employeeSubject);
+          obj ? this.f['employeeList'].setValue(obj.employeeList) :'';
         }
         else {
           this.clearDependancy('employee');
@@ -182,8 +201,8 @@ export class VisitEntryListComponent {
     if(this.filterForm.invalid){
       return;
     }else{
-      this.isSearch = true;
       const formData = this.filterForm.getRawValue();
+      this.webService.setFilterToLocalStorage({ pageName: this.commonMethod.getRoutingUrl(), filterValue: formData});
       let str = ('pageno=' + +(this.pageNumber || 0) + '&pagesize=' + 10 + '&UnitId=' + (formData?.unit || 0) + '&PartyIds=' + (formData?.employeeList?.toString() || '') + '&fromDate=' + (this.commonMethod.dateFormat(formData?.fromDate, 'year')) +
         '&organizationId=' + (formData?.organization || 0) + '&toDate=' + (this.commonMethod.dateFormat(formData?.toDate, 'year')));
       this.apiService.setHttp('GET', 'api/VisitEntry/GetAllVisitEntries?' + str, false, false, false, 'priyadarshaniService');
@@ -193,7 +212,7 @@ export class VisitEntryListComponent {
             this.visitEntryArray = res.responseData;
             this.tableDatasize = res.responseData1?.totalCount;
             this.totalPages = res.responseData1?.totalPages;
-
+            
           } else {
             this.commonMethod.checkDataType(res.statusMessage) == false
               ? this.errorService.handleError(res.statusCode)
@@ -201,9 +220,11 @@ export class VisitEntryListComponent {
             this.visitEntryArray = [];
             this.tableDatasize = 0;
           }
+          this.isSearch= true;
         },
         error: (err: any) => {
           this.errorService.handleError(err.status);
+          this.isSearch= true;
         },
       });
     }
@@ -283,13 +304,14 @@ export class VisitEntryListComponent {
           },
         });
       }
-      this.getTableDetails();
+      //this.getTableDetails();
     });
   }
 
   resetForm(){
     this.formDirective && this.formDirective.resetForm();
     this.createFilterForm();
+    this.webService.setFilterToLocalStorage({ pageName: this.commonMethod.getRoutingUrl(), filterValue: {}});
     this.isSearch = false;
   }
 }
